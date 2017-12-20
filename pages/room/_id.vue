@@ -40,19 +40,17 @@ export default {
     return {
       socket: null,
       socketStatus: "",
-      url: "ws://localhost:8080/ws",
+      url: "ws://localhost:8080/ws?channel=",
     }
   },
   methods: {
     connectWS(){
-      console.log(this.url)
       this.socket = new WebSocket(this.url)
       this.socket.addEventListener('open', () => {
         this.socketStatus = "Connected..."
       })
       this.socket.addEventListener('error', (error) => {
         this.socketStatus = "Error..."
-        console.log(error.name)
       })
       this.socket.addEventListener('message', (event) => {
         this.receiveMessage(event.data)
@@ -91,13 +89,17 @@ export default {
     },
     receiveMessage(data){
       let chat = JSON.parse(data)
-      
+
       /* Update view */
       this.chats.push(chat)
     }
   },
   mounted(){
     this.connectWS()
+    let channelQuery = $nuxt.$route.query.channel
+    if(channelQuery != undefined)
+      this.url += channelQuery  
+    console.log(this.url)
   },
   beforeDestroy(){
     this.socket.close()
