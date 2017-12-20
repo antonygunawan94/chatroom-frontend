@@ -79,9 +79,6 @@ export default {
           username: username,
           message: message
         }
-        /* Update view */
-        this.chats.push(chat)
-
         /* Send data to websocket */
         this.socket.send(JSON.stringify(chat))
 
@@ -93,7 +90,10 @@ export default {
       }
     },
     receiveMessage(data){
-      console.log(data)
+      let chat = JSON.parse(data)
+      
+      /* Update view */
+      this.chats.push(chat)
     }
   },
   mounted(){
