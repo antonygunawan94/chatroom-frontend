@@ -95,11 +95,11 @@ export default {
     }
   },
   mounted(){
-    this.connectWS()
     let channelQuery = $nuxt.$route.query.channel
     if(channelQuery != undefined)
       this.url += channelQuery  
     console.log(this.url)
+    this.connectWS()
   },
   beforeDestroy(){
     this.socket.close()
